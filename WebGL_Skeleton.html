@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Nje shembull me Three JS</title>
+	<script src="libs/three.js" type="text/javascript"></script>
+    <script src="libs/TrackballControls.js"></script>
+	<script src="libs/jquery-2.2.0.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="Controls/jquery-1.9.0.js"></script>
+    <script type="text/javascript" src="libs/stats.js"></script>
+    <script type="text/javascript" src="Controls/dat.gui.js"></script>
+</head>
+<body>
+	<div id="WebGL-output"></div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			var stats = initStats();
+
+			//definimi i skenes
+			var scene = new THREE.Scene();
+
+			//renderer definition
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+
+
+            document.addEventListener( 'keypress', onDocumentKeyPress, false );
+
+
+
+            function onDocumentKeyPress( event ) {
+
+        var keyCode = event.which;
+        var positionDelta = 70;
+        var rotationDelta = 0.1;
+        //console.log(keyCode);
+        //A
+        if ( keyCode == 97 )
+        {
+
+            camera.position.x -= positionDelta;
+        }
+        //D
+        else if ( keyCode == 100 )
+        {
+
+            camera.position.x += positionDelta;
+        }
+        //W
+        else if ( keyCode == 119 )
+        {
+            camera.position.z -= positionDelta;
+        }
+        //S
+        else if ( keyCode == 115 )
+        {
+            camera.position.z += positionDelta;
+
+        }
+        //Q
+        else if ( keyCode == 113 )
+        {
+            camera.position.y += positionDelta;
+        }
+        //E
+        else if ( keyCode == 101 )
+        {
+            camera.position.y -= positionDelta;
+
+        }
+        //T
+        else if ( keyCode == 116 )
+        {
+            camera.rotation.x += rotationDelta;
+
+        }
+        //G
+        else if ( keyCode == 103 )
+        {
+            camera.rotation.x -= rotationDelta;
+
+        }
+        //F
+        else if ( keyCode == 102 )
+        {
+            camera.rotation.y += rotationDelta;
+
+        }
+        //H
+        else if ( keyCode == 104 )
+        {
+            camera.rotation.y -= rotationDelta;
+        }
+    }
+
+			//camera definition
+			var camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
+			camera.position.set(0,60,500);
+            camera.lookAt(scene.position);
+            scene.add(camera);
+
+			//controll definition
+			var control = new THREE.TrackballControls(camera);
+
+			//lights
+			var dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+			dirLight.position.set(-300, 150, 50);
+			scene.add(dirLight);
+
+			//Ambient Light
+			var ambientLight = new THREE.AmbientLight( 0x222222 );
+			var light = new THREE.DirectionalLight( 0xFFFFFF, 1.0 );
+			light.position.set( 200, 400, 500 );
+
+			var light2 = new THREE.DirectionalLight( 0xFFFFFF, 1.0 );
+			light2.position.set( -400, 200, -300 );
+
+			scene.add(ambientLight);
+			scene.add(light);
+			scene.add(light2);
+
+			//Add a head light here
+			pointLight = new THREE.PointLight(0xfed38a, 0.5);
+			pointLight.position.set(30,50 ,0);
+			scene.add(pointLight);
+
+			//bullding1
+			var	cubeGeo = new THREE.CubeGeometry(60, 150, 100);
+			var cubeMat = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/wall.jpg")
+            });
+			var cubeObj = new THREE.Mesh(cubeGeo, cubeMat);
+			scene.add(cubeObj);
+
+            var cube1Geo = new THREE.CubeGeometry(60, 150, 100);
+            var cube1Obj = new THREE.Mesh(cube1Geo, cubeMat);
+            scene.add(cube1Obj);
+            cube1Obj.position.x = -62;
+
+            //rufe of building 1
+            var cube2Geo = new THREE.CubeGeometry(35, 35, 98);
+            var cube2Mat =  new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/rufe.jpg")
+            });
+            var cube2Obj = new THREE.Mesh(cube2Geo, cube2Mat);
+            cube2Obj.position.x = -67;
+            cube2Obj.position.y = 75;
+            cube2Obj.rotation.z = 2.35;
+            scene.add(cube2Obj);
+
+            var cube3Geo = new THREE.CubeGeometry(35, 35, 98);
+            var cube3Obj = new THREE.Mesh(cube3Geo, cube2Mat);
+            cube3Obj.position.x = -27;
+            cube3Obj.position.y = 75;
+            cube3Obj.rotation.z = 2.35;
+            scene.add(cube3Obj);
+
+            var cube4Geo = new THREE.CubeGeometry(35, 35, 98);
+            var cube4Obj = new THREE.Mesh(cube4Geo, cube2Mat);
+            cube4Obj.position.x = 6;
+            cube4Obj.position.y = 75;
+            cube4Obj.rotation.z = 2.35;
+            scene.add(cube4Obj);
+
+            //rufe part
+            var cube5Geo = new THREE.CubeGeometry(35, 35, 35);
+            var cube5Mat = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/wall.jpg")
+            });
+            var cube5Obj = new THREE.Mesh(cube5Geo, cube5Mat);
+            cube5Obj.position.x = -29;
+            cube5Obj.position.y = 83;
+            scene.add(cube5Obj);
+
+            //building 1 windows
+            var cube6Geo = new THREE.CubeGeometry(55, 9, 3);
+            var cube6Mat = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/window.jpg")
+            });
+            var cube6Obj = new THREE.Mesh(cube6Geo, cube6Mat);
+            cube6Obj.position.x = 0;
+            cube6Obj.position.y = 70;
+            cube6Obj.position.z = 50;
+            scene.add(cube6Obj);
+
+            //window
+            var cube7Geo = new THREE.CubeGeometry(55, 9, 3);
+            var cube7Obj = new THREE.Mesh(cube7Geo, cube6Mat);
+            cube7Obj.position.x = 0;
+            cube7Obj.position.y = 55;
+            cube7Obj.position.z = 50;
+            scene.add(cube7Obj);
+
+            //window
+            var cube8Geo = new THREE.CubeGeometry(55, 9, 3);
+            var cube8Obj = new THREE.Mesh(cube8Geo, cube6Mat);
+            cube8Obj.position.x = 0;
+            cube8Obj.position.y = 40;
+            cube8Obj.position.z = 50;
+            scene.add(cube8Obj);
+
+            //window
+            var cube9Geo = new THREE.CubeGeometry(55, 9, 3);
+            var cube9Obj = new THREE.Mesh(cube9Geo, cube6Mat);
+            cube9Obj.position.x = 0;
+            cube9Obj.position.y = 25;
+            cube9Obj.position.z = 50;
+            scene.add(cube9Obj);
+
+            //window
+            var cube10Geo = new THREE.CubeGeometry(55, 9, 3);
+            var cube10Obj = new THREE.Mesh(cube10Geo, cube6Mat);
+            cube10Obj.position.x = 0;
+            cube10Obj.position.y = 10;
+            cube10Obj.position.z = 50;
+            scene.add(cube10Obj);
+
+            //window
+            var cube11Geo = new THREE.CubeGeometry(55, 9, 3);
+            var cube11Obj = new THREE.Mesh(cube11Geo, cube6Mat);
+            cube11Obj.position.x = 0;
+            cube11Obj.position.y = -5;
+            cube11Obj.position.z = 50;
+            scene.add(cube11Obj);
+
+            //window
+            var cube12Geo = new THREE.CubeGeometry(55, 9, 3);
+            var cube12Mat = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/window.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 0;
+            cube12Obj.position.y = -20;
+            cube12Obj.position.z = 50;
+            scene.add(cube12Obj);
+
+            //window
+            var cube12Geo = new THREE.CubeGeometry(55, 9, 3);
+            var cube12Mat = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/window.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 0;
+            cube12Obj.position.y = -35;
+            cube12Obj.position.z = 50;
+            scene.add(cube12Obj);
+
+
+            //window
+            var cube6Geo = new THREE.CubeGeometry(55, 9, 3);
+            var cube6Obj = new THREE.Mesh(cube6Geo, cube6Mat);
+            cube6Obj.position.x = -62;
+            cube6Obj.position.y = 70;
+            cube6Obj.position.z = 50;
+            scene.add(cube6Obj);
+
+            //window
+            var cube17Geo = new THREE.CubeGeometry(55, 9, 3);
+            var cube17Obj = new THREE.Mesh(cube17Geo, cube6Mat);
+            cube17Obj.position.x = -62;
+            cube17Obj.position.y = 55;
+            cube17Obj.position.z = 50;
+            scene.add(cube17Obj);
+
+            //window
+            var cube8Geo = new THREE.CubeGeometry(55, 9, 3);
+            var cube8Obj = new THREE.Mesh(cube8Geo, cube6Mat);
+            cube8Obj.position.x = -62;
+            cube8Obj.position.y = 40;
+            cube8Obj.position.z = 50;
+            scene.add(cube8Obj);
+
+            //window
+            var cube9Geo = new THREE.CubeGeometry(55, 9, 3);
+            var cube9Obj = new THREE.Mesh(cube9Geo, cube6Mat);
+            cube9Obj.position.x = -62;
+            cube9Obj.position.y = 25;
+            cube9Obj.position.z = 50;
+            scene.add(cube9Obj);
+
+            //window
+            var cube10Geo = new THREE.CubeGeometry(55, 9, 3);
+            var cube10Obj = new THREE.Mesh(cube10Geo, cube6Mat);
+            cube10Obj.position.x = -62;
+            cube10Obj.position.y = 10;
+            cube10Obj.position.z = 50;
+            scene.add(cube10Obj);
+
+            //window
+            var cube11Geo = new THREE.CubeGeometry(55, 9, 3);
+            var cube11Obj = new THREE.Mesh(cube11Geo, cube6Mat);
+            cube11Obj.position.x = -62;
+            cube11Obj.position.y = -5;
+            cube11Obj.position.z = 50;
+            scene.add(cube11Obj);
+
+            //window
+            var cube12Geo = new THREE.CubeGeometry(55, 9, 3);
+            var cube12Mat = new THREE.MeshNormalMaterial();
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube6Mat);
+            cube12Obj.position.x = -62;
+            cube12Obj.position.y = -20;
+            cube12Obj.position.z = 50;
+            scene.add(cube12Obj);
+
+            //window
+            var cube12Geo = new THREE.CubeGeometry(55, 9, 3);
+            var cube12Mat = new THREE.MeshNormalMaterial();
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube6Mat);
+            cube12Obj.position.x = -62;
+            cube12Obj.position.y = -35;
+            cube12Obj.position.z = 50;
+            scene.add(cube12Obj);
+
+            //buss station
+            var cube12Geo = new THREE.CubeGeometry(100, 100, 1);
+            var cube12Mat = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/gllas.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = -27;
+            cube12Obj.position.y = -40;
+            cube12Obj.position.z = 100;
+            scene.add(cube12Obj);
+
+            //bs
+            var cube12Geo = new THREE.CubeGeometry(100, 1, 25);
+            var cube12Mat = new THREE.MeshNormalMaterial();
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube6Mat);
+            cube12Obj.position.x = -27;
+            cube12Obj.position.y = 0;
+            cube12Obj.position.z = 110;
+            scene.add(cube12Obj);
+
+
+            var cube12Geo = new THREE.CubeGeometry(5, 50, 5);
+            var cube12Mat =new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/stone.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = -27;
+            cube12Obj.position.y = -25;
+            cube12Obj.position.z = 110;
+            scene.add(cube12Obj);
+
+            var cube12Geo = new THREE.CubeGeometry(5, 50, 5);
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 17;
+            cube12Obj.position.y = -25;
+            cube12Obj.position.z = 110;
+            scene.add(cube12Obj);
+
+            var cube12Geo = new THREE.CubeGeometry(5, 50, 5);
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = -67;
+            cube12Obj.position.y = -25;
+            cube12Obj.position.z = 110;
+            scene.add(cube12Obj);
+
+
+
+            var cube12Geo = new THREE.CubeGeometry(25, 10, 5);
+            var cube12Mat = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/wood.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = -47;
+            cube12Obj.position.y = -45;
+            cube12Obj.position.z = 110;
+            scene.add(cube12Obj);
+
+            var cube12Geo = new THREE.CubeGeometry(25, 10, 5);
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = -5;
+            cube12Obj.position.y = -45;
+            cube12Obj.position.z = 110;
+            scene.add(cube12Obj);
+
+
+            var cube12Geo = new THREE.CubeGeometry(80, 10, 80);
+            var cube12Mat = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/brick.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = -20;
+            cube12Obj.position.y = -45;
+            cube12Obj.position.z = 200;
+            scene.add(cube12Obj);
+
+            var cube12Geo = new THREE.CubeGeometry(75, 50, 75);
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube6Mat);
+            cube12Obj.position.x = -20;
+            cube12Obj.position.y = -45;
+            cube12Obj.position.z = 200;
+            scene.add(cube12Obj);
+
+            var cube12Geo = new THREE.CubeGeometry(80, 5, 80);
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = -20;
+            cube12Obj.position.y = -20;
+            cube12Obj.position.z = 200;
+            scene.add(cube12Obj);
+
+            //rufe
+            var cube12Geo = new THREE.CubeGeometry(73, 28, 28);
+            var cube12Mat = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/rufe.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = -20;
+            cube12Obj.position.y = -20;
+            cube12Obj.position.z = 180;
+            cube12Obj.rotation.x = 2.4;
+            scene.add(cube12Obj);
+
+            var cube12Geo = new THREE.CubeGeometry(73, 28, 28);
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = -20;
+            cube12Obj.position.y = -20;
+            cube12Obj.position.z = 220;
+            cube12Obj.rotation.x = 2.4;
+            scene.add(cube12Obj);
+
+
+
+
+            var cube12Geo = new THREE.CubeGeometry(50, 80, 200);
+            var cube12Mat = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/metal.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 90;
+            cube12Obj.position.y = 0;
+            cube12Obj.position.z = 0;
+            scene.add(cube12Obj);
+
+			//cylinder definition
+			var cylObj = new THREE.Mesh(
+				new THREE.CylinderGeometry(25, 25, 200, 32, 32),
+				new THREE.MeshLambertMaterial({
+                    map:THREE.ImageUtils.loadTexture("libs/img/metal1.jpg")
+				})
+			);
+			cylObj.position.x = 90;
+			cylObj.position.y = 42;
+            cylObj.rotation.x = 4.72;
+			scene.add(cylObj);
+
+            var cube12Geo = new THREE.CubeGeometry(20, 20, 20);
+            var cube12Mat = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/metal.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 89;
+            cube12Obj.position.y = 65;
+            cube12Obj.position.z = 70;
+            scene.add(cube12Obj);
+
+            var cube12Geo = new THREE.CubeGeometry(70, 20, 50);
+            var cube12Mat = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/wall.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 100;
+            cube12Obj.position.y = -40;
+            cube12Obj.position.z = 180;
+            scene.add(cube12Obj);
+
+            var cube12Geo = new THREE.CubeGeometry(70, 40, 50);
+            var cube12Mat =new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/wall.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 100;
+            cube12Obj.position.y = -40;
+            cube12Obj.position.z = 200;
+            scene.add(cube12Obj);
+
+            var cube12Geo = new THREE.CubeGeometry(70, 20, 50);
+            var cube12Mat =new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/wall.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 100;
+            cube12Obj.position.y = -40;
+            cube12Obj.position.z = 220;
+            scene.add(cube12Obj);
+
+            var cube12Geo = new THREE.CubeGeometry(48, 18, 18);
+            var cube12Mat = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/rufe.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 40;
+            cube12Obj.position.y = -32;
+            cube12Obj.position.z = 290;
+            cube12Obj.rotation.x = 2.4;
+            scene.add(cube12Obj);
+
+            var cube12Geo = new THREE.CubeGeometry(8, 8, 8);
+            var cube12Mat =  new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/wall.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 20;
+            cube12Obj.position.y = -25;
+            cube12Obj.position.z = 295;
+            scene.add(cube12Obj);
+
+            var cube12Geo = new THREE.CubeGeometry(20, 18, 30);
+            var cube12Mat = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/wall.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 20;
+            cube12Obj.position.y = -45;
+            cube12Obj.position.z = 310;
+            scene.add(cube12Obj);
+
+            var cube12Geo = new THREE.CubeGeometry(5, 20, 5);
+            var cube12Mat =  new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/wall.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 13;
+            cube12Obj.position.y = -25;
+            cube12Obj.position.z = 320;
+            scene.add(cube12Obj);
+
+            var cube12Geo = new THREE.CubeGeometry(7, 1, 7);
+            var cube12Mat =  new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/metal.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 13;
+            cube12Obj.position.y = -15;
+            cube12Obj.position.z = 320;
+            scene.add(cube12Obj);
+
+            var cube12Geo = new THREE.CubeGeometry(1, 15, 1);
+            var cube12Mat =  new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/metal.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 13;
+            cube12Obj.position.y = -10;
+            cube12Obj.position.z = 320;
+            scene.add(cube12Obj);
+
+            var cube12Geo = new THREE.CubeGeometry(30, 1, 50);
+            var cube12Mat =  new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/asphalt.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 48;
+            cube12Obj.position.y = -50;
+            cube12Obj.position.z = 300;
+            scene.add(cube12Obj);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            			//Cube definition
+			var	cubeGeo = new THREE.CubeGeometry(130, 100, 30);
+			var cubeMat = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/wall.jpg")
+            });
+			var cubeObj = new THREE.Mesh(cubeGeo, cubeMat);
+			cubeObj.position.x = -200;
+			cubeObj.position.y = 2;
+			cubeObj.position.z = 0;
+			scene.add(cubeObj);
+
+			//Kubi i dyte
+			var	cubeGeoA = new THREE.CubeGeometry(130, 100, 30);
+			var cubeMatA = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/wall.jpg")
+            });
+			var cubeObjA = new THREE.Mesh(cubeGeoA, cubeMatA);
+			cubeObjA.position.x = -200;
+			cubeObjA.position.y = 2;
+			cubeObjA.position.z = 36;
+			scene.add(cubeObjA);
+
+			//Kulmi1
+			var	cubeGeoKa = new THREE.CubeGeometry(129, 21, 21);
+			var cubeMatKa = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/rufe.jpg")
+            });
+			var cubeObjKa = new THREE.Mesh(cubeGeoKa, cubeMatKa);
+			cubeObjKa.position.x = -200;
+			cubeObjKa.position.y = 52;
+			cubeObjKa.position.z = -0.2;
+			cubeObjKa.rotation.x = 0.77;
+			scene.add(cubeObjKa);
+
+
+			//Kulmi2
+			var	cubeGeoKb = new THREE.CubeGeometry(129, 21, 21);
+			var cubeMatKb = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/rufe.jpg")
+            });
+			var cubeObjKb = new THREE.Mesh(cubeGeoKb, cubeMatKb);
+			cubeObjKb.position.x = -200;
+			cubeObjKb.position.y = 52;
+			cubeObjKb.position.z = 36;
+			cubeObjKb.rotation.x = 0.77;
+			scene.add(cubeObjKb);
+
+                  //WindowRendi1
+                  var   cubeGeoKulmi = new THREE.CubeGeometry(15, 15, 2);
+                  var cubeMatKulmi = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/window.jpg")
+            });
+                  var cubeObjKulmi = new THREE.Mesh(cubeGeoKulmi, cubeMatKulmi);
+                  cubeObjKulmi.position.x = -240;
+                  cubeObjKulmi.position.y = 35;
+                  cubeObjKulmi.position.z = 52;
+                  //cubeObjKulmi1.rotation.x = 0.77;
+                  scene.add(cubeObjKulmi);
+
+
+                  //Window1Rendi1
+                  var   cubeGeoKulmi1 = new THREE.CubeGeometry(15, 15, 2);
+                  var cubeMatKulmi1 = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/window.jpg")
+            });
+                  var cubeObjKulmi1 = new THREE.Mesh(cubeGeoKulmi1, cubeMatKulmi1);
+                  cubeObjKulmi1.position.x = -200;
+                  cubeObjKulmi1.position.y = 35;
+                  cubeObjKulmi1.position.z = 52;
+                  //cubeObjKulmi1.rotation.x = 0.77;
+                  scene.add(cubeObjKulmi1);
+
+
+                  //Window2Rendi1
+                  var   cubeGeoKulmi2 = new THREE.CubeGeometry(15, 15, 2);
+                  var cubeMatKulmi2 = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/window.jpg")
+            });
+                  var cubeObjKulmi2 = new THREE.Mesh(cubeGeoKulmi2, cubeMatKulmi2);
+                  cubeObjKulmi2.position.x = -160;
+                  cubeObjKulmi2.position.y = 35;
+                  cubeObjKulmi2.position.z = 52;
+                  //cubeObjKulmi1.rotation.x = 0.77;
+                  scene.add(cubeObjKulmi2);
+
+                  //Window3Rendi2
+                  var   cubeGeoKulmi3 = new THREE.CubeGeometry(15, 15, 2);
+                  var cubeMatKulmi3 = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/window.jpg")
+            });
+                  var cubeObjKulmi3 = new THREE.Mesh(cubeGeoKulmi3, cubeMatKulmi3);
+                  cubeObjKulmi3.position.x = -240;
+                  cubeObjKulmi3.position.y = 10;
+                  cubeObjKulmi3.position.z = 52;
+                  //cubeObjKulmi1.rotation.x = 0.77;
+                  scene.add(cubeObjKulmi3);
+
+                  //Window3Rendi2
+                  var   cubeGeoKulmi4 = new THREE.CubeGeometry(15, 15, 2);
+                  var cubeMatKulmi4 = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/window.jpg")
+            });
+                  var cubeObjKulmi4 = new THREE.Mesh(cubeGeoKulmi4, cubeMatKulmi4);
+                  cubeObjKulmi4.position.x = -200;
+                  cubeObjKulmi4.position.y = 10;
+                  cubeObjKulmi4.position.z = 52;
+                  //cubeObjKulmi1.rotation.x = 0.77;
+                  scene.add(cubeObjKulmi4);
+
+                  //Window3Rendi2
+                  var   cubeGeoKulmi5 = new THREE.CubeGeometry(15, 15, 2);
+                  var cubeMatKulmi5 = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/window.jpg")
+            });
+                  var cubeObjKulmi5 = new THREE.Mesh(cubeGeoKulmi5, cubeMatKulmi5);
+                  cubeObjKulmi5.position.x = -160;
+                  cubeObjKulmi5.position.y = 10;
+                  cubeObjKulmi5.position.z = 52;
+                  //cubeObjKulmi1.rotation.x = 0.77;
+                  scene.add(cubeObjKulmi5);
+
+                  //Window3Rendi3
+                  var   cubeGeoKulmi5 = new THREE.CubeGeometry(15, 15, 2);
+                  var cubeMatKulmi5 = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/window.jpg")
+            });
+                  var cubeObjKulmi5 = new THREE.Mesh(cubeGeoKulmi5, cubeMatKulmi5);
+                  cubeObjKulmi5.position.x = -240;
+                  cubeObjKulmi5.position.y = -15;
+                  cubeObjKulmi5.position.z = 52;
+                  //cubeObjKulmi1.rotation.x = 0.77;
+                  scene.add(cubeObjKulmi5);
+
+                  //Window3Rendi3
+                  var   cubeGeoKulmi5 = new THREE.CubeGeometry(20, 30, 2);
+                  var cubeMatKulmi5 = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/door.jpg")
+            });
+                  var cubeObjKulmi5 = new THREE.Mesh(cubeGeoKulmi5, cubeMatKulmi5);
+                  cubeObjKulmi5.position.x = -200;
+                  cubeObjKulmi5.position.y = -35;
+                  cubeObjKulmi5.position.z = 52;
+                  //cubeObjKulmi1.rotation.x = 0.77;
+                  scene.add(cubeObjKulmi5);
+
+                  //Window3Rendi3
+                  var   cubeGeoKulmi6 = new THREE.CubeGeometry(15, 15, 2);
+                  var cubeMatKulmi6 = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/window.jpg")
+            });
+                  var cubeObjKulmi6 = new THREE.Mesh(cubeGeoKulmi6, cubeMatKulmi6);
+                  cubeObjKulmi6.position.x = -160;
+                  cubeObjKulmi6.position.y = -15;
+                  cubeObjKulmi6.position.z = 52;
+                  //cubeObjKulmi1.rotation.x = 0.77;
+                  scene.add(cubeObjKulmi6);
+
+                  //Asfallt
+                  var   cubeGeoAs = new THREE.CubeGeometry(440, 1, 400);
+                  var cubeMatAs =new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/asphalt.jpg")
+            });
+                  var cubeObjAs = new THREE.Mesh(cubeGeoAs, cubeMatAs);
+                  cubeObjAs.position.x = -50;
+                  cubeObjAs.position.y = -50;
+                  cubeObjAs.position.z = 52;
+                  //cubeObjKulmi1.rotation.x = 0.77;
+                  scene.add(cubeObjAs);
+
+
+			//Repository
+			var	cubeGeoR = new THREE.CubeGeometry(100, 20, 50);
+			var cubeMatR = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/brick.jpg")
+            });
+			var cubeObjR = new THREE.Mesh(cubeGeoR, cubeMatR);
+			cubeObjR.position.x = -150;
+			cubeObjR.position.y = -40;
+			cubeObjR.position.z = 116;
+			scene.add(cubeObjR);
+
+			//Repository1
+			var	cubeGeoR1 = new THREE.CubeGeometry(20, 20, 20);
+			var cubeMatR1 = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/wall.jpg")
+            });
+			var cubeObjR1 = new THREE.Mesh(cubeGeoR1, cubeMatR1);
+			cubeObjR1.position.x = -180;
+			cubeObjR1.position.y = -25;
+			cubeObjR1.position.z = 116;
+			scene.add(cubeObjR1);
+
+			//Repository2
+			var	cubeGeoR2 = new THREE.CubeGeometry(1, 60, 1);
+			var cubeMatR2 = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/metal.jpg")
+            });
+			var cubeObjR2 = new THREE.Mesh(cubeGeoR2, cubeMatR2);
+			cubeObjR2.position.x = -180;
+			cubeObjR2.position.y = -25;
+			cubeObjR2.position.z = 116;
+			scene.add(cubeObjR2);
+
+			//Repository3
+			var	cubeGeoR3 = new THREE.CubeGeometry(105, 2, 55);
+			var cubeMatR3 = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/metal.jpg")
+            });
+			var cubeObjR3 = new THREE.Mesh(cubeGeoR3, cubeMatR3);
+			cubeObjR3.position.x = -150;
+			cubeObjR3.position.y = -29;
+			cubeObjR3.position.z = 116;
+			scene.add(cubeObjR3);
+
+			//Repository4
+			var	cubeGeoR3 = new THREE.CubeGeometry(20, 2, 20);
+			var cubeMatR3 =  new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/gllas.jpg")
+            });
+			var cubeObjR3 = new THREE.Mesh(cubeGeoR3, cubeMatR3);
+			cubeObjR3.position.x = -180;
+			cubeObjR3.position.y = -35;
+			cubeObjR3.position.z = 145;
+			cubeObjR3.rotation.x = 0.10;
+			scene.add(cubeObjR3);
+
+			//Repository5
+			var	cubeGeoR4 = new THREE.CubeGeometry(20, 2, 20);
+			var cubeMatR4 =new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/gllas.jpg")
+            });
+			var cubeObjR4 = new THREE.Mesh(cubeGeoR4, cubeMatR4);
+			cubeObjR4.position.x = -150;
+			cubeObjR4.position.y = -35;
+			cubeObjR4.position.z = 145;
+			cubeObjR4.rotation.x = 0.10;
+			scene.add(cubeObjR4);
+
+			//Repository6
+			var	cubeGeoR5 = new THREE.CubeGeometry(20, 2, 20);
+			var cubeMatR5 =new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/gllas.jpg")
+            });
+			var cubeObjR5 = new THREE.Mesh(cubeGeoR5, cubeMatR5);
+			cubeObjR5.position.x = -120;
+			cubeObjR5.position.y = -35;
+			cubeObjR5.position.z = 145;
+			cubeObjR5.rotation.x = 0.10;
+			scene.add(cubeObjR5);
+
+
+            //Nje der dikund
+                  var   cubeGeoDera = new THREE.CubeGeometry(20, 30, 2);
+                  var cubeMatDera = new THREE.MeshBasicMaterial({
+                        map:THREE.ImageUtils.loadTexture("libs/img/door.jpg"
+                  )});
+                  var cubeGeoDera = new THREE.Mesh(cubeGeoDera, cubeMatDera);
+                  cubeGeoDera.position.x = 64;
+                  cubeGeoDera.position.y = -35;
+                  cubeGeoDera.position.z = 200;
+                  cubeGeoDera.rotation.y = 1.60;
+                  scene.add(cubeGeoDera);
+
+            //Nje der dikund tjter
+                  var   cubeGeoDera1 = new THREE.CubeGeometry(15, 15, 2);
+                  var cubeMatDera1 = new THREE.MeshBasicMaterial({
+                        map:THREE.ImageUtils.loadTexture("libs/img/door.jpg"
+                  )});
+                  var cubeGeoDera1 = new THREE.Mesh(cubeGeoDera1, cubeMatDera1);
+                  cubeGeoDera1.position.x = 14;
+                  cubeGeoDera1.position.y = -43;
+                  cubeGeoDera1.position.z = 290;
+                  cubeGeoDera1.rotation.y = 1.60;
+                  scene.add(cubeGeoDera1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            var cube12Geo = new THREE.CubeGeometry(70, 1, 30);
+            var cube12Mat =new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/asphalt.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 35;
+            cube12Obj.position.y = -50;
+            cube12Obj.position.z = 340;
+            scene.add(cube12Obj);
+
+            var cylObj = new THREE.Mesh(
+				new THREE.CylinderGeometry(24, 24, 68, 32, 32),
+				new THREE.MeshLambertMaterial({
+                     map:THREE.ImageUtils.loadTexture("libs/img/metal.jpg")
+				})
+			);
+			cylObj.position.x = 100;
+			cylObj.position.y = -22;
+            cylObj.position.z = 200;
+            cylObj.rotation.x = 4.72;
+            cylObj.rotation.z = 4.72;
+			scene.add(cylObj);
+
+            var cube12Geo = new THREE.CubeGeometry(70, 20, 50);
+            var cube12Mat = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/wall.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 100;
+            cube12Obj.position.y = -40;
+            cube12Obj.position.z = 220;
+            scene.add(cube12Obj);
+
+            var cube12Geo = new THREE.CubeGeometry(50, 20, 20);
+            var cube12Mat = new THREE.MeshBasicMaterial({
+                map:THREE.ImageUtils.loadTexture("libs/img/wall.jpg")
+            });
+            var cube12Obj = new THREE.Mesh(cube12Geo, cube12Mat);
+            cube12Obj.position.x = 40;
+            cube12Obj.position.y = -40;
+            cube12Obj.position.z = 290;
+            scene.add(cube12Obj);
+
+            var geometry = new THREE.SphereGeometry( 15,32, 32 );
+			var material = new THREE.MeshBasicMaterial({map:THREE.ImageUtils.loadTexture("libs/img/world.jpg")});
+			var sphere = new THREE.Mesh( geometry, material );
+			sphere.position.z =120;
+			sphere.position.x = -120;
+			sphere.position.y= -15;
+			scene.add( sphere );
+
+			//plane definition
+			var planeGeo = new THREE.PlaneGeometry(5000, 5000, 64, 64);
+			var planeMat = new THREE.MeshBasicMaterial({
+				color: 0xD0E0E3,
+			    map:THREE.ImageUtils.loadTexture("libs/img/grass.jpg"),
+				side: THREE.DoubleSide
+			});
+			var planeObj = new THREE.Mesh(planeGeo, planeMat);
+			planeObj.rotation.x = 1.5708;
+			planeObj.position.y = -51;
+			scene.add(planeObj);
+
+			//sky
+			var skyGeo = new THREE.SphereGeometry(5000, 64, 64);
+			var skyMat = new THREE.MeshLambertMaterial({
+				color:0x87d1f0,
+				map:THREE.ImageUtils.loadTexture("libs/img/sky.jpg"),
+				side: THREE.BackSide
+			});
+			var skyObj = new THREE.Mesh(skyGeo, skyMat);
+			scene.add(skyObj);
+
+			var step=0;
+
+        	var controls = new function() {
+            	this.rotationSpeed = 0.05;
+
+        	}
+
+        var gui = new dat.GUI();
+        gui.add(controls, 'rotationSpeed',0,0.6);
+
+
+
+			//bashkangjitja e renderuesit DOM elementit WebGL-output
+			$("#WebGL-output").append(renderer.domElement);
+
+			animate();
+		function animate() {
+		    requestAnimationFrame(animate);
+    		render();
+			update();
+		}
+		function update(){
+			control.update();
+		}
+		function render(){
+			//sphere.rotation.y += 0.03;
+			renderer.render(scene, camera);
+			sphere.rotation.y += controls.rotationSpeed;
+		}
+
+		function initStats() {
+
+           var stats = new Stats();
+
+
+          return stats
+        }
+	});
+	</script>
+</body>
+</html>
